@@ -37,25 +37,35 @@ The API enables car rental and return operations, and calculates rental prices a
 ## Quick Start: How to Test the API
 
 1. **Run the API**
-   - Start the project (e.g., with `dotnet run` or from Visual Studio).
-   - Open the Swagger UI (usually at `https://localhost:8080/swagger`).
+   - Start the project
+     - From source code: run `dotnet run` in the project folder, or use Visual Studio/VS Code
+     - From the GitHub .zip release package: extract the zip, open a terminal in that directory, and run `dotnet CarRentalApi.Api.dll`.
+   - Open the Swagger UI by using any browser and navigating to `https://localhost:8080/swagger`.
 
-2. **Initialize Master Data**
-   - Go to the `MasterData` section in Swagger.
+3. **Initialize Master Data**
+   - Go to the `Master Data` section in Swagger.
    - Use the `POST /api/MasterData/initialize` endpoint to create demo cars, pricing, and customers.
    - You will see a confirmation message when initialization is complete.
 
-3. **Check Master Data Status (Optional)**
+4. **Check Master Data Status (Optional)**
    - Use `GET /api/MasterData/status` to verify if the database is initialized.
 
-4. **Rent a Car**
-   - Go to the `Rental` section in Swagger.
+5. **Rent a Car**
+   - Go to the `Renting Operations` section in Swagger.
    - Use `POST /api/Rental` to create a new rental. Provide a valid customer and car ID (from the initialized data).
+  ```
+  {
+     "carId": "11111111-1111-1111-1111-111111111111",
+     "customerId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+     "startDate": "2025-05-12T08:16:00.911Z",
+     "endDate": "2025-05-16T08:16:00.911Z"
+  }
+  ```     
    - On success, you'll get the rental details and a unique rental ID.
 
 5. **Return a Car**
    - Use `POST /api/Rental/{id}/return` with the rental ID from the previous step.
-   - You can provide a return date if you want to simulate a specific return scenario; if you do not provide a date, today's date will be used by default. This is important for testing late returns or other behaviors.
+   - You can provide a return date if you want to simulate a specific return scenario; if you do not provide a date, today's date will be used by default. *This is important for testing late returns or other behaviors.*
    - On success, you'll get the updated rental with return info and any fees.
 
 6. **(Optional) Clean All Data**
