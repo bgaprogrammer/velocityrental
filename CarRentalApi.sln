@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentalApi.Core", "CarRen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentalApi.Api", "CarRentalApi.Api\CarRentalApi.Api.csproj", "{0BC43F26-D213-F3DB-B25F-F4C30306C69C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentalApi.Core.Tests", "CarRentalApi.Core.Tests\CarRentalApi.Core.Tests.csproj", "{C270A5B6-106A-FF05-57A2-BC409603E4CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0BC43F26-D213-F3DB-B25F-F4C30306C69C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BC43F26-D213-F3DB-B25F-F4C30306C69C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BC43F26-D213-F3DB-B25F-F4C30306C69C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C270A5B6-106A-FF05-57A2-BC409603E4CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C270A5B6-106A-FF05-57A2-BC409603E4CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C270A5B6-106A-FF05-57A2-BC409603E4CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C270A5B6-106A-FF05-57A2-BC409603E4CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
