@@ -25,7 +25,7 @@ jobs:
         run: dotnet restore
         
       - name: Publish
-        run: dotnet publish CarRentalApi/CarRentalApi.csproj --configuration Release --output ./publish
+        run: dotnet publish CarRentalApi.Api/CarRentalApi.Api.csproj --configuration Release --output ./publish
 
       - name: Create Release artifacts
         run: |
