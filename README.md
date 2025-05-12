@@ -2,7 +2,7 @@
 Scope: MVP 
 
 ## Project Description
-VeloCityRental is an API built with .NET 9, following a Cloud Native architecture and ready for deployment on any cloud provider supporting .NET 9.
+VelocityRental is an API built with .NET 9, following a Cloud Native architecture and ready for deployment on any cloud provider supporting .NET 9.
 The API enables car rental and return operations, and calculates rental prices and customer loyalty points based on flexible business rules.
 
 ## Technologies Used

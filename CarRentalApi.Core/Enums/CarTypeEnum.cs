@@ -5,8 +5,6 @@ namespace CarRentalApi.Core.Enums;
 /// </summary>
 public enum CarTypeEnum
 {
-    None = 0,
-
     /// <summary>
     /// Premium car type.
     /// </summary>
