@@ -64,15 +64,10 @@ var app = builder.Build();
 
 SqliteInitializer.EnsureDatabaseCreated(app.Services);
 
-// Configure the HTTP request pipeline
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // app.UseHttpsRedirection(); // Not required for local development
-
 
 // Health check endpoint
 app.MapHealthCheckEndpoints();
