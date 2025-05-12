@@ -5,6 +5,10 @@ using CarRentalApi.Core.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure Kestrel to use the PORT environment variable
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://*:{port}");
+
 // Add services to the container
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -45,9 +49,8 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection(); // Not required for local development
 
-// Simple test endpoint
-app.MapGet("/test", () => Results.Ok("running"))
-    .WithName("TestEndpoint");
+// Health check endpoint
+app.MapGet("/healthz", () => Results.Ok(new { Status = "Healthy", Timestamp = DateTime.UtcNow }));
 
 app.MapControllers();
 

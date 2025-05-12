@@ -1,0 +1,59 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger on version tags
+
+permissions:
+  contents: write  # Required to create a release and upload assets
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET 9 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+        
+      - name: Publish
+        run: dotnet publish CarRentalApi/CarRentalApi.csproj --configuration Release --output ./publish
+
+      - name: Create Release artifacts
+        run: |
+          cd publish
+          zip -r "../CarRentalApi-${{ github.ref_name }}.zip" ./*
+          cd ..
+          ls -l CarRentalApi-${{ github.ref_name }}.zip
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # This token is provided by Actions automatically
+        with:
+          files: CarRentalApi-${{ github.ref_name }}.zip
+          name: Release ${{ github.ref_name }}
+          body: |
+            # CarRentalApi ${{ github.ref_name }}
+            
+            This release contains the compiled API ready to run.
+
+            ## Requirements
+            - .NET 9.0 Runtime
+            
+            ## How to use
+            1. Download the zip file
+            2. Extract it to a directory
+            3. Open a terminal in that directory
+            4. Run `dotnet CarRentalApi.dll`
+            5. Navigate to `http://localhost:8080/swagger` to view the API documentation
+          draft: false
+          prerelease: false
