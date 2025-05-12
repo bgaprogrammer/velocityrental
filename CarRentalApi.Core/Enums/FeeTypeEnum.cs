@@ -5,8 +5,6 @@ namespace CarRentalApi.Core.Enums;
 /// </summary>
 public enum FeeTypeEnum
 {
-    None = 0,
-
     /// <summary>
     /// Fee charged for returning the car after the agreed end date.
     /// </summary>

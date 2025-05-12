@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using CarRentalApi.Infrastructure.Persistence;
+using CarRentalApi.Infrastructure.Repositories;
+using CarRentalApi.Core.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
@@ -16,11 +21,20 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
-// TODO: Register infrastructure and core services
+
+// Register DbContext with SQLite
+builder.Services.AddDbContext<CarRentalDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Register repositories
+builder.Services.AddScoped<ICarRepository, CarRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<ICarTypePricingRepository, CarTypePricingRepository>();
+builder.Services.AddScoped<IMasterDataRepository, MasterDataRepository>();
 
 var app = builder.Build();
+
+SqliteInitializer.EnsureDatabaseCreated(app.Services);
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
