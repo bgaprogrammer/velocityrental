@@ -1,5 +1,7 @@
 # Velocity Rental (Car Rental API)
-Scope: MVP 
+Scope: MVP
+
+![.NET Build & Test & Deploy](https://github.com/bgaprogrammer/velocityrental/actions/workflows/dotnet.yml/badge.svg)
 
 ## Project Description
 VelocityRental is an API built with .NET 9, following a Cloud Native architecture and ready for deployment on any cloud provider supporting .NET 9.
