@@ -65,22 +65,19 @@ The API project exposes the functionality through RESTful endpoints:
 1. **Repository Pattern**:
 The Repository pattern is used to abstract data access logic from the business logic. It provides a collection-like interface for accessing domain objects.
 
-2. **Repository Pattern**:
+2. **Strategy Pattern**:
 The Strategy pattern is used for implementing different pricing strategies for different car types. This allows the application to switch between different pricing algorithms at runtime.
 
-3. **Strategy Pattern**:
+3. **Factory Pattern**:
 The Factory pattern is used to create pricing strategy objects without exposing the instantiation logic to the client code.
 
-4. **Factory Pattern**:
+4. **Dependency Injection Pattern**:
 The Dependency Injection pattern is used throughout the application to provide dependencies to classes rather than having them create or find dependencies themselves.
 
-5. **Dependency Injection Pattern**:
-The Dependency Injection pattern is used throughout the application to provide dependencies to classes rather than having them create or find dependencies themselves.
-
-6. **Mediator Pattern (Minimal API Endpoints)**:
+5. **Mediator Pattern (Minimal API Endpoints)**:
 The application uses a form of the Mediator pattern through its API endpoint organization, where endpoint handlers act as mediators between HTTP requests and domain services.
 
-7. **Domain-Driven Design**:
+6. **Domain-Driven Design**:
 While not a design pattern in the traditional sense, DDD is an architectural approach that focuses on domain modeling (core domain and domain logic).
 
 ## Database
