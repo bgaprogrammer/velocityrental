@@ -1,11 +1,12 @@
 # Velocity Rental (Car Rental API)
-Scope: MVP
 
 ![.NET Build & Test & Deploy](https://github.com/bgaprogrammer/velocityrental/actions/workflows/dotnet.yml/badge.svg)
 
 ## Project Description
 VelocityRental is an API built with .NET 9, following a Cloud Native architecture and ready for deployment on any cloud provider supporting .NET 9.
 The API enables car rental and return operations, and calculates rental prices and customer loyalty points based on flexible business rules.
+
+Scope: MVP
 
 ## Technologies Used
 
@@ -26,13 +27,65 @@ The API enables car rental and return operations, and calculates rental prices a
 - **Moq**: Dependency mocking
 - **FluentAssertions**: Readable assertions for tests
 
+## Architecture
 
-### Patterns & Architecture
-- **Clean Architecture**: Clear separation of concerns
-- **Repository Pattern**: Data access abstraction
-- **Domain-Driven Design**: Focused on domain modeling
+### Clean Architecture
 
----
+The application follows a Clean Architecture pattern with clear separation of concerns across multiple layers.
+
+1. **Core Layer (Domain Layer)**:
+
+The Core project contains the domain model, business logic, and interfaces that define the contracts for the outer layers:
+
+- Domain Entities: Represent the business objects like Car, Customer, Rental
+- Domain Services: Encapsulate complex business logic
+- Repositories Interfaces: Define contracts for data access
+- Domain Logic: Includes pricing strategies and business rules
+  
+2. **Infrastructure Layer**:
+
+The Infrastructure project handles data persistence and implements the repository interfaces defined in the Core layer:
+
+- Database Context: Entity Framework Core implementation
+- Repository Implementations: Data access logic
+- Migrations: Database schema evolution
+
+3. **API Layer (Presentation Layer)**:
+
+The API project exposes the functionality through RESTful endpoints:
+
+- Minimal API Endpoints: Using .NET 9's minimal API approach
+- Dependency Injection: Wiring up services and repositories
+- Configuration: Application settings and middleware
+
+![](docs/images/diag-components.svg)
+
+## Design Patterns:
+
+1. **Repository Pattern**:
+The Repository pattern is used to abstract data access logic from the business logic. It provides a collection-like interface for accessing domain objects.
+
+2. **Repository Pattern**:
+The Strategy pattern is used for implementing different pricing strategies for different car types. This allows the application to switch between different pricing algorithms at runtime.
+
+3. **Strategy Pattern**:
+The Factory pattern is used to create pricing strategy objects without exposing the instantiation logic to the client code.
+
+4. **Factory Pattern**:
+The Dependency Injection pattern is used throughout the application to provide dependencies to classes rather than having them create or find dependencies themselves.
+
+5. **Dependency Injection Pattern**:
+The Dependency Injection pattern is used throughout the application to provide dependencies to classes rather than having them create or find dependencies themselves.
+
+6. **Mediator Pattern (Minimal API Endpoints)**:
+The application uses a form of the Mediator pattern through its API endpoint organization, where endpoint handlers act as mediators between HTTP requests and domain services.
+
+7. **Domain-Driven Design**:
+While not a design pattern in the traditional sense, DDD is an architectural approach that focuses on domain modeling (core domain and domain logic).
+
+## Database
+
+![](docs/images/diag-db.svg)
 
 ## Quick Start: How to Test the API
 
