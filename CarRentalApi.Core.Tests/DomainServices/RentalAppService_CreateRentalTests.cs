@@ -27,7 +27,7 @@ namespace CarRentalApi.Core.Tests.DomainServices
                 Id = carId,
                 IsAvailable = true,
                 LicensePlate = "TEST123",
-                Brand = model.Contains("BMW") ? "BMW" : model.Contains("Kia") ? "Kia" : model.Contains("Nissan") ? "Nissan" : "Seat",
+                Brand = brand,
                 Model = model,
                 CarType = carType
             };
