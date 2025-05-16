@@ -15,6 +15,6 @@ public interface ICarTypePricingStrategy
 
     public static int CalculateRentalDays(DateTime start, DateTime end)
     {
-        return (int)(end.Date - start.Date).TotalDays + 1;
+        return (int)(end.Date - start.Date).TotalDays;
     }
 }

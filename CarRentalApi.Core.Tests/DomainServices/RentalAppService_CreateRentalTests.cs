@@ -1,5 +1,6 @@
 using CarRentalApi.Core.Entities;
 using CarRentalApi.Core.Enums;
+using CarRentalApi.Core.Dto;
 using FluentAssertions;
 using Moq;
 
@@ -9,18 +10,18 @@ namespace CarRentalApi.Core.Tests.DomainServices
     public class RentalAppService_CreateRentalTests : RentalAppServiceTestBase
     {
         [Theory(DisplayName = "Should calculate correct price for various car types and durations (CreateRental)")]
-        [InlineData("BMW 7", CarTypeEnum.Premium, 10, 3000)]
-        [InlineData("Kia Sorento", CarTypeEnum.SUV, 9, 1290)]
-        [InlineData("Nissan Juke", CarTypeEnum.SUV, 2, 300)]
-        [InlineData("Seat Ibiza", CarTypeEnum.Small, 10, 440)]
-        public async Task Should_Calculate_Correct_Price_For_CarType_And_Duration(string model, CarTypeEnum carType, int days, decimal expectedPrice)
+        [InlineData("BMW", "7", CarTypeEnum.Premium, 10, 3000)]
+        [InlineData("Kia", "Sorento", CarTypeEnum.SUV, 9, 1290)]
+        [InlineData("Nissan", "Juke", CarTypeEnum.SUV, 2, 300)]
+        [InlineData("Seat", "Ibiza", CarTypeEnum.Small, 10, 440)]
+        public async Task Should_Calculate_Correct_Price_For_CarType_And_Duration(string brand, string model, CarTypeEnum carType, int days, decimal expectedPrice)
         {
             // Arrange
             var carId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var startDate = DateTime.UtcNow.Date;
-            var endDate = startDate.AddDays(days - 1);
-            var rental = new Rental { CarId = carId, CustomerId = customerId, StartDate = startDate, EndDate = endDate };
+            var endDate = startDate.AddDays(days);
+            var rental = new RentalRequest { CarId = carId, CustomerId = customerId, StartDate = startDate, EndDate = endDate };
 
             var car = new Car {
                 Id = carId,

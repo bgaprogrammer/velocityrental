@@ -18,4 +18,14 @@ public class Car
     public CarTypeEnum CarType { get; set; }
 
     public bool IsAvailable { get; set; } = true;
+
+    public void MarkAsAvailable()
+    {
+        IsAvailable = true;
+    }
+
+    public void MarkAsUnavailable()
+    {
+        IsAvailable = false;
+    }
 }
