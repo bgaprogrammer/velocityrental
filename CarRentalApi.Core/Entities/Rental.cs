@@ -34,4 +34,13 @@ public class Rental
     public int LoyaltyPointsEarned { get; set; }
 
     public bool IsReturned { get; set; }
+
+    public void CalculateFinalPrice()
+    {
+        FinalPrice = InitialPrice;
+        if (AdditionalFees is not null)
+        {
+            FinalPrice += AdditionalFees.Sum(fee => fee.Amount);
+        }
+    }
 }

@@ -1,3 +1,4 @@
+using CarRentalApi.Core.Dto;
 using CarRentalApi.Core.Entities;
 using CarRentalApi.Core.Repositories;
 
@@ -31,7 +32,7 @@ public class RentalAppService
     /// <summary>
     /// Creates a new rental (rent a car).
     /// </summary>
-    public async Task<(Rental? rental, string? error)> CreateRentalAsync(Rental rental)
+    public async Task<(Rental? rental, string? error)> CreateRentalAsync(RentalRequest rental)
     {
         // Validate rental dates
         var today = DateTime.UtcNow.Date;
@@ -63,14 +64,19 @@ public class RentalAppService
         if (collision)
             return (null, "There is already an active or overlapping rental for this car in the selected period.");
 
-        // Assign explicit GUID to rental if not set
-        if (rental.Id == Guid.Empty)
-            rental.Id = Guid.NewGuid();
+        var rentalCreate = new Rental
+        {
+            Id = Guid.NewGuid(),
+            CarId = rental.CarId,
+            CustomerId = rental.CustomerId,
+            StartDate = rental.StartDate,
+            EndDate = rental.EndDate,
+        };
 
         // Assign explicit GUIDs to any AdditionalFees if not set
-        if (rental.AdditionalFees != null)
+        if (rentalCreate.AdditionalFees != null)
         {
-            foreach (var fee in rental.AdditionalFees)
+            foreach (var fee in rentalCreate.AdditionalFees)
             {
                 if (fee.Id == Guid.Empty)
                     fee.Id = Guid.NewGuid();
@@ -85,18 +91,18 @@ public class RentalAppService
 
         // Calculate rental price and loyalty points
         var strategy = _pricingStrategyFactory.GetStrategy(car.CarType);
-        rental.InitialPrice = await strategy.CalculateRentalPriceAsync(rental.StartDate, rental.EndDate, pricing);
-        rental.LoyaltyPointsEarned = strategy.GetLoyaltyPoints(pricing);
-        rental.IsReturned = false;
+        rentalCreate.InitialPrice = await strategy.CalculateRentalPriceAsync(rental.StartDate, rental.EndDate, pricing);
+        rentalCreate.LoyaltyPointsEarned = strategy.GetLoyaltyPoints(pricing);
+        rentalCreate.IsReturned = false;
 
         // Save rental
-        await _rentalRepository.AddAsync(rental);
+        await _rentalRepository.AddAsync(rentalCreate);
 
         // Update car availability
-        car.IsAvailable = false;
+        car.MarkAsUnavailable();
         await _carRepository.UpdateAsync(car);
 
-        return (rental, null);
+        return (rentalCreate, null);
     }
 
     /// <summary>
@@ -112,6 +118,11 @@ public class RentalAppService
         if (rental.IsReturned)
             return (null, "Rental has already been returned.");
 
+        var car = await _carRepository.GetByIdAsync(rental.CarId);
+
+        if (car is null)
+            return (null, "Car not found. There is a data issue with this rental");
+
         rental.AdditionalFees.RemoveAll(f => f.FeeType == Enums.FeeTypeEnum.Late);
 
         var lateFeeResult = await TryAddLateFeeIfNeeded(rental, returnDate);
@@ -119,12 +130,13 @@ public class RentalAppService
         if (lateFeeResult.error is not null)
             return (null, lateFeeResult.error);
 
-        CalculateFinalPrice(rental);
+        rental.CalculateFinalPrice();
         rental.IsReturned = true;
 
         await _rentalRepository.UpdateAsync(rental);
 
-        await SetCarAvailable(rental.CarId);
+        car.MarkAsAvailable();
+        await _carRepository.UpdateAsync(car);
 
         return (rental, null);
     }
@@ -174,26 +186,5 @@ public class RentalAppService
         
         rental.AdditionalFees.Add(lateFee);
         return (true, null);
-    }
-
-    private void CalculateFinalPrice(Rental rental)
-    {
-        rental.FinalPrice = rental.InitialPrice;
-
-        if (rental.AdditionalFees is not null)
-        {
-            rental.FinalPrice += rental.AdditionalFees.Sum(fee => fee.Amount);
-        }
-    }
-
-    private async Task SetCarAvailable(Guid carId)
-    {
-        var car = await _carRepository.GetByIdAsync(carId);
-
-        if (car is not null)
-        {
-            car.IsAvailable = true;
-            await _carRepository.UpdateAsync(car);
-        }
     }
 }

@@ -1,7 +1,8 @@
+using CarRentalApi.Core.Constants;
+using CarRentalApi.Core.DomainServices;
+using CarRentalApi.Core.Dto;
 using CarRentalApi.Core.Entities;
 using CarRentalApi.Core.Repositories;
-using CarRentalApi.Core.DomainServices;
-using CarRentalApi.Core.Constants;
 
 namespace CarRentalApi.Api.Endpoints;
 
@@ -10,7 +11,7 @@ public static class RentalEndpoints
     public static IEndpointRouteBuilder MapRentalEndpoints(this IEndpointRouteBuilder app)
     {
         // Create a new rental
-        app.MapPost("/api/Rental", async (Rental rental, RentalAppService rentalAppService) =>
+        app.MapPost("/api/Rental", async (RentalRequest rental, RentalAppService rentalAppService) =>
         {
             var (createdRental, error) = await rentalAppService.CreateRentalAsync(rental);
 
