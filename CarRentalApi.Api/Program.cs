@@ -30,7 +30,9 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-builder.Services.AddControllers();
+
+// Register health checks
+builder.Services.AddHealthChecks();
 
 // Register DbContext with SQLite
 builder.Services.AddDbContext<CarRentalDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -69,15 +71,13 @@ app.UseSwaggerUI();
 
 // app.UseHttpsRedirection(); // Not required for local development
 
-// Health check endpoint
-app.MapHealthCheckEndpoints();
+// Health checks endpoint
+app.MapHealthChecks("/healthz");
 
 // MasterData endpoints
 app.MapMasterDataEndpoints();
 
 // Rental endpoints
 app.MapRentalEndpoints();
-
-app.MapControllers();
 
 app.Run();
